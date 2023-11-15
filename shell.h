@@ -31,30 +31,25 @@
 #define USE_GETLINE 0
 #define USE_STRTOK 0
 
-<<<<<<< HEAD
 #define HIST_FILE	".simple_shell_archives"
-=======
 #define HIST_FILE	".history_simple_shell"
->>>>>>> bb6924802ed8faa9c684b29b078067d55f125ba1
 #define HIST_MAX	4096
 
 extern char **environ;
 
 
 /**
-<<<<<<< HEAD
+
 * struct liststr - singly linked list
 * @num: the number field
 * @str: a string
 * @next: points to the next node
-*/
-=======
+
  * struct liststr - singly linked list
  * @num: the number field
  * @str: a string
  * @next: points to the next node
  */
->>>>>>> bb6924802ed8faa9c684b29b078067d55f125ba1
 typedef struct liststr
 {
 	int num;
@@ -63,7 +58,7 @@ typedef struct liststr
 } list_t;
 
 /**
-<<<<<<< HEAD
+
 *struct passinfo - contains pseudo-arguements to pass into a function,
 *		allowing uniform prototype for function pointer struct
 *@arg: a string generated from getline containing arguements
@@ -84,8 +79,7 @@ typedef struct liststr
 *@cmd_buf_type: CMD_type ||, &&, ;
 *@readfd: the fd from which to read line input
 *@histcount: the history line number count
-*/
-=======
+
  *struct passinfo - contains pseudo-arguements to pass into a function,
  *		allowing uniform prototype for function pointer struct
  *@arg: a string generated from getline containing arguements
@@ -107,7 +101,7 @@ typedef struct liststr
  *@readfd: the fd from which to read line input
  *@histcount: the history line number count
  */
->>>>>>> bb6924802ed8faa9c684b29b078067d55f125ba1
+
 typedef struct passinfo
 {
 	char *arg;
@@ -136,17 +130,15 @@ typedef struct passinfo
 	0, 0, 0}
 
 /**
-<<<<<<< HEAD
+
 *struct builtin - contains a builtin string and related function
 *@type: the builtin command flag
 *@func: the function
-*/
-=======
+
  *struct builtin - contains a builtin string and related function
  *@type: the builtin command flag
  *@func: the function
- */
->>>>>>> bb6924802ed8faa9c684b29b078067d55f125ba1
+*/
 typedef struct builtin
 {
 	char *type;
