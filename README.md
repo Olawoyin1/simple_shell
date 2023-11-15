@@ -1,116 +1,228 @@
-# 0x16. C - Simple Shell
- **By Spencer Cheng, featuring Julien Barbier**
-Project to be done in teams of 2 people (your team: Rahma AbdEl Aziz, menna abd alazeem)
+# MSH (Minimal Shell)
 
-# Learning Objectives
-At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
+MSH is a minimalistic shell implementation that provides a basic command-line interface with enhanced features. This README outlines the various functionalities supported by MSH.
 
-# General
-Who designed and implemented the original Unix operating system
-Who wrote the first version of the UNIX shell
-Who invented the B programming language (the direct predecessor to the C programming language)
-Who is Ken Thompson
-How does a shell work
-What is a pid and a ppid
-How to manipulate the environment of the current process
-What is the difference between a function and a system call
-How to create processes
-What are the three prototypes of main
-How does the shell use the PATH to find the programs
-How to execute another program with the execve system call
-How to suspend the execution of a process until one of its children terminates
-What is EOF / “end-of-file”?
-# Requirements
-#  General
-Allowed editors: vi, vim, emacs
-All your files will be compiled on Ubuntu 20.04 LTS using gcc, using the options -Wall -Werror -Wextra -pedantic -std=gnu89
-All your files should end with a new line
-A README.md file, at the root of the folder of the project is mandatory
-Your code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl
-Your shell should not have any memory leaks
-No more than 5 functions per file
-All your header files should be include guarded
-Use system calls only when you need to (why?)
-# GitHub
-*There should be one project repository per group. If you and your partner have a repository with the same name in both your accounts, you risk a 0% score. Add your partner as a collaborator. *
+## Table of Contents
 
-More Info
-Output
-Unless specified otherwise, your program must have the exact same output as sh (/bin/sh) as well as the exact same error output.
-The only difference is when you print an error, the name of the program must be equivalent to your argv[0] (See below)
-Example of error with sh:
+- [MSH (Minimal Shell)](#msh-minimal-shell)
+	- [Table of Contents](#table-of-contents)
+		- [Change Directory (`cd`)](#change-directory-cd)
+		- [Alias and Unalias](#alias-and-unalias)
+			- [Usage:](#usage)
+		- [Logical Operators (`&&` and `||`)](#logical-operators--and-)
+			- [Example:](#example)
+		- [System Commands](#system-commands)
+			- [Example:](#example-1)
+		- [Exit Command](#exit-command)
+			- [Example:](#example-2)
+		- [Setenv and Unsetenv](#setenv-and-unsetenv)
+			- [Example:](#example-3)
+		- [File as Input](#file-as-input)
+			- [Example:](#example-4)
+		- [Comments](#comments)
+			- [Example:](#example-5)
+		- [Variable Expansion](#variable-expansion)
+			- [Example:](#example-6)
+		- [Command Separator (`;`)](#command-separator-)
+			- [Example:](#example-7)
+		- [Custom Env](#custom-env)
+			- [Example:](#example-8)
+		- [PATH](#path)
+		- [Commands with and without Arguments](#commands-with-and-without-arguments)
+			- [Examples:](#examples)
+	- [Releases](#releases)
+	- [Download and Usage](#download-and-usage)
+	- [Author](#author)
 
-$ echo "qwerty" | /bin/sh
-/bin/sh: 1: qwerty: not found
-$ echo "qwerty" | /bin/../bin/sh
-/bin/../bin/sh: 1: qwerty: not found
-$
-Same error with your program hsh:
+---
 
-$ echo "qwerty" | ./hsh
-./hsh: 1: qwerty: not found
-$ echo "qwerty" | ./././hsh
-./././hsh: 1: qwerty: not found
-$
+### Change Directory (`cd`)
 
-# List of allowed functions and system calls
-access (man 2 access)
-chdir (man 2 chdir)
-close (man 2 close)
-closedir (man 3 closedir)
-execve (man 2 execve)
-exit (man 3 exit)
-_exit (man 2 _exit)
-fflush (man 3 fflush)
-fork (man 2 fork)
-free (man 3 free)
-getcwd (man 3 getcwd)
-getline (man 3 getline)
-getpid (man 2 getpid)
-isatty (man 3 isatty)
-kill (man 2 kill)
-malloc (man 3 malloc)
-open (man 2 open)
-opendir (man 3 opendir)
-perror (man 3 perror)
-read (man 2 read)
-readdir (man 3 readdir)
-signal (man 2 signal)
-stat (__xstat) (man 2 stat)
-lstat (__lxstat) (man 2 lstat)
-fstat (__fxstat) (man 2 fstat)
-strtok (man 3 strtok)
-wait (man 2 wait)
-waitpid (man 2 waitpid)
-wait3 (man 2 wait3)
-wait4 (man 2 wait4)
-write (man 2 write)
+The `cd` command is built into MSH, allowing users to change the current working directory. Simply enter `cd [directory]` to navigate to the specified directory. If `[directory]` is omitted, the current user's `$HOME` directory is  used. This `cd` also handles the `-` argument that's passed to the `cd` command. For example, when
+the command is `cd -`, the shell changes directory to the value of `$OLDPWD`, which is the last directory the user
+visited before their current working directory.
 
-# Compilation
-## Your shell will be compiled this way:
+---
 
-`gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh`
+### Alias and Unalias
 
+MSH supports aliasing commands for convenience using the `alias` command and removing aliases with `unalias`. This enables users to create shorthand notations for commonly used commands.
 
-# files
-- README.md - description about the project repo
-- man_1_simple_shell - is the man page for the shell we are going to write.
-- AUTHORS - file at the  root of your repository, listing all individuals having contributed content to the repository. 
-- main.h - is the header file which contains the standared header file and prototype of o function used in the program.
-- main.c - initialize the program with infinite loop by call the prompt function
-- prompt.c - it use getline system call to read the input from the user and run infinite loop with fork to keep prompt going.
-- special_character - It identiies if the special inputs such as if the frist input is slash,the user typed exit or env...
-- string.c -it handles the strings(string length, write string,find string in directory,concatane strings....)
-- cmd.c - it finds the command the user entered.
-- execute.c - execute the command.
+#### Usage:
 
-## How to add Author file
-`Bash script for generating the list of authors in git repo`
+```bash
+alias cls='clear'
+alias md=mkdir
+
+# Improved usage
+alias ls="ls --color=auto" ping="ping -c 5"
+alias memchk='valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s'
+alias flush_dns_cache=""
+alias lsfwrules='sudo iptables -nv --line-numbers -L '
+.
+.
+.
+alias flush_dns_cache='resolvectl flush-caches'
+alias l1="ls -1"
+alias grep='grep --color=auto'
+
+unalias cls # remove the 'cls' alias
 ```
-#!/bin/sh
 
-git shortlog -se \
-  | perl -spe 's/^\s+\d+\s+//' \
-  | sed -e '/^CommitSyncScript.*$/d' \
-  > AUTHORS
-  ```
+---
+
+### Logical Operators (`&&` and `||`)
+
+Logical operators `&&` (AND) and `||` (OR) are supported in MSH. They enable users to execute commands conditionally based on the success or failure of previous commands.
+
+#### Example:
+
+```bash
+command1 && command2
+command1 || command3
+```
+
+---
+
+### System Commands
+
+MSH allows the execution of system commands. Enter any system command directly in the shell prompt to run it.
+
+#### Example:
+
+```bash
+ls -a
+cat /etc/passwd
+mkdir src
+```
+
+---
+
+### Exit Command
+
+The `exit` command, built into MSH, is used to exit the shell gracefully. It takes **positive** exit codes
+
+#### Example:
+
+```bash
+exit
+exit 1 # exit with status code 1
+```
+
+---
+
+### Setenv and Unsetenv
+
+The `setenv` and `unsetenv` commands are utilized to set and unset environment variables, respectively. This feature enhances the customization of the shell environment.
+
+#### Example:
+
+```bash
+setenv MY_VARIABLE my_value
+unsetenv MY_VARIABLE
+```
+
+---
+
+### File as Input
+
+MSH can take input from a file, allowing users to execute a series of commands from a script.
+
+#### Example:
+
+```bash
+msh script.txt
+```
+
+---
+
+### Comments
+
+Comments can be added to MSH using the `#` symbol, allowing users to annotate their commands without affecting execution.
+
+#### Example:
+
+```bash
+# This is a comment
+echo "Hello, MSH!"
+
+ls # this will list the contents in the current working directory
+```
+
+---
+
+### Variable Expansion
+
+MSH supports variable expansion, including `$$` (current process ID) and `$?` (exit status of the last executed command).
+
+#### Example:
+
+```bash
+echo "Process ID: $$"
+command
+echo "Exit Status: $?"
+```
+
+---
+
+### Command Separator (`;`)
+
+The semicolon (`;`) acts as a command separator in MSH, allowing users to execute multiple commands on a single line.
+
+#### Example:
+
+```bash
+command1 ; command2
+```
+
+---
+
+### Custom Env
+
+Custom command `env` is available to display the current environment variables.
+
+#### Example:
+
+```bash
+env
+```
+
+---
+
+### PATH
+
+MSH uses the `PATH` environment variable to locate executable files. Ensure the desired directories are included in the `PATH` for seamless command execution.
+
+---
+
+### Commands with and without Arguments
+
+MSH supports commands with and without arguments, providing flexibility in command execution.
+
+#### Examples:
+
+```bash
+ls
+ls -l
+```
+
+---
+
+## Releases
+
+- [Latest Release](https://github.com/nanafox/simple_shell/releases/latest)
+- [All Releases](https://github.com/nanafox/simple_shell/releases)
+
+## Download and Usage
+
+To download the latest release of MSH, click [here](https://github.com/nanafox/simple_shell/releases/latest).
+
+For information on how to install and execute, please visit the [wiki](https://github.com/nanafox/simple_shell/wiki)
+
+---
+
+## Author
+
+Maxwell Nana Forson
+
+---
