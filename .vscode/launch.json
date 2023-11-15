@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/PC/Desktop/MAIN/simple_shell",
-      "program": "c:/Users/PC/Desktop/MAIN/simple_shell/build/Debug/outDebug",
+      "cwd": "c:/Users/PC/Desktop/simple_shell-master",
+      "program": "c:/Users/PC/Desktop/simple_shell-master/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
